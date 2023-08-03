@@ -6,7 +6,7 @@ public class Main {
         List<String> names = Arrays.asList("Jack", "Connor", "Harry", "George", "Samuel", "John");
         List<String> families = Arrays.asList("Evans", "Young", "Harris", "Wilson", "Davies", "Adamson", "Brown");
         Collection<Person> persons = new ArrayList<>();
-        for (int i = 0; i < 10_000_000; i++) {
+        for (int i = 0; i < 100; i++) {
             persons.add(new Person(
                     names.get(new Random().nextInt(names.size())),
                     families.get(new Random().nextInt(families.size())),
@@ -14,11 +14,11 @@ public class Main {
                     Sex.values()[new Random().nextInt(Sex.values().length)],
                     Education.values()[new Random().nextInt(Education.values().length)])
             );
-            long ageCount = persons.stream()
-                    .filter(person -> person.getAge() < 18)
-                    .count();
 
-            System.out.println("Количество несовершеннолетних: " + ageCount);
+            System.out.println("Количество несовершеннолетних: " + persons.stream()
+                    .filter(person -> person.getAge() < 18)
+                    .count() );
+
             List<String> Families = persons.stream()
                     .filter(person -> person.getSex() == Sex.MAN && person.getAge() >= 18 && person.getAge() <= 27)
                     .map(Person::getFamily)
@@ -26,9 +26,11 @@ public class Main {
 
             System.out.println("Фамилии призывников: " + Families);
             List<Person> potentialEmployers = persons.stream()
-                    .filter(person -> person.getEducation() == Education.HIGHER
-                            && ((person.getSex() == Sex.WOMAN && person.getAge() >= 18 && person.getAge() <= 60)
-                            || (person.getSex() == Sex.MAN && person.getAge() >= 18 && person.getAge() <= 65)))
+                    .filter(person -> person.getEducation() == Education.HIGHER)
+                    .filter(person -> person.getAge() > 18)
+                    .filter(person -> person.getSex() == Sex.WOMAN
+                            ? ((person.getAge() < 60))
+                            : person.getAge() < 65)
                     .sorted(Comparator.comparing(Person::getFamily))
                     .collect(Collectors.toList());
 
