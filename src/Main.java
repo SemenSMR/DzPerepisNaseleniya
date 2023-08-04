@@ -19,23 +19,22 @@ public class Main {
                     .filter(person -> person.getAge() < 18)
                     .count() );
 
-            List<String> Families = persons.stream()
+            System.out.println("Фамилии призывников:" + persons.stream()
                     .filter(person -> person.getSex() == Sex.MAN && person.getAge() >= 18 && person.getAge() <= 27)
                     .map(Person::getFamily)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
 
-            System.out.println("Фамилии призывников: " + Families);
-            List<Person> potentialEmployers = persons.stream()
+           // System.out.println("Фамилии призывников: " + Families);
+            System.out.println("Потенциально работоспособные люди с высшим образованием:" + persons.stream()
                     .filter(person -> person.getEducation() == Education.HIGHER)
                     .filter(person -> person.getAge() > 18)
                     .filter(person -> person.getSex() == Sex.WOMAN
                             ? ((person.getAge() < 60))
                             : person.getAge() < 65)
                     .sorted(Comparator.comparing(Person::getFamily))
-                    .collect(Collectors.toList());
-
-            System.out.println("Потенциально работоспособные люди с высшим образованием:");
-            potentialEmployers.forEach(System.out::println);
+                    .collect(Collectors.toList()));
+          //  System.out.println("Потенциально работоспособные люди с высшим образованием:");
+            
 
         }
     }
